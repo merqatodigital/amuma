@@ -97,7 +97,8 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<Content>(defaultContent);
   const [loaded, setLoaded] = useState(false);
   const [saveState, setSaveState] = useState<SaveState>("idle");
-  const [admin, setAdminState] = useState(false);
+  // Build mode: the site is openly editable — no admin login while we build.
+  const [admin, setAdminState] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [library, setLibrary] = useState<string[]>([]);
@@ -124,50 +125,6 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       alive = false;
     };
   }, []);
-
-  /* ------------------------------------------------------------- auth/role */
-  const checkRole = useCallback(async (userId: string | undefined) => {
-    if (!userId) {
-      setAdminState(false);
-      return;
-    }
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (data) {
-      setAdminState(true);
-      return;
-    }
-    // No admin exists yet? the first signed-in account claims the site.
-    const { data: claimed } = await supabase.rpc("claim_admin");
-    setAdminState(claimed === true);
-  }, []);
-
-  useEffect(() => {
-    let alive = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!alive) return;
-      setEmail(data.session?.user.email ?? null);
-      void checkRole(data.session?.user.id);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      setEmail(session?.user.email ?? null);
-      if (event === "SIGNED_OUT") {
-        setAdminState(false);
-        setEditMode(false);
-      } else {
-        void checkRole(session?.user.id);
-      }
-    });
-    return () => {
-      alive = false;
-      sub.subscription.unsubscribe();
-    };
-  }, [checkRole]);
 
   /* ------------------------------------------------------------ auto-save */
   useEffect(() => {
@@ -312,17 +269,12 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
-    setAdminState(false);
     setEditMode(false);
   }, []);
 
-  const setAdmin = useCallback(
-    (v: boolean) => {
-      if (!v) void signOut();
-    },
-    [signOut],
-  );
+  const setAdmin = useCallback((v: boolean) => {
+    setAdminState(v);
+  }, []);
 
   const value = useMemo(
     () => ({
