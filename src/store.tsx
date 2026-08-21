@@ -9,10 +9,12 @@ import {
   type ReactNode,
 } from "react";
 import { defaultContent, type Content, type MediaBlock } from "./content";
-import { deleteMedia, getAllMedia, putMedia, youtubeId } from "./lib/media";
+import { youtubeId } from "./lib/media";
 import { familyParam } from "./admin/fonts";
+import { supabase } from "@/integrations/supabase/client";
 
-const LS_KEY = "amuma.content.v1";
+const ROW_ID = "main";
+const BUCKET = "site-media";
 
 /* ------------------------------------------------------------- utilities */
 
@@ -22,7 +24,7 @@ function isObj(v: unknown): v is Record<string, unknown> {
 
 /** Deep-merge stored content over defaults so new fields always appear. */
 function merge<T>(base: T, over: unknown): T {
-  if (!isObj(base) || !isObj(over)) return (over === undefined ? base : (over as T));
+  if (!isObj(base) || !isObj(over)) return over === undefined ? base : (over as T);
   const out: Record<string, unknown> = { ...(base as Record<string, unknown>) };
   for (const k of Object.keys(over)) {
     if (k in (base as Record<string, unknown>)) {
@@ -55,6 +57,16 @@ export function getPath(obj: unknown, path: string): unknown {
   return path.split(".").reduce<unknown>((a, k) => (a == null ? a : (a as never)[k]), obj);
 }
 
+/** Public URL for a file stored in the cloud media bucket. */
+export function mediaSrc(ref: string): string {
+  if (!ref) return "";
+  if (ref.startsWith("sb:")) return `/api/public/media/${ref.slice(3)}`;
+  if (ref.startsWith("idb:")) return ""; // legacy device-only media
+  return ref;
+}
+
+export type SaveState = "idle" | "saving" | "saved" | "error";
+
 /* --------------------------------------------------------------- context */
 
 type Ctx = {
@@ -70,61 +82,111 @@ type Ctx = {
   setAdmin: (v: boolean) => void;
   editMode: boolean;
   setEditMode: (v: boolean) => void;
+  /* cloud */
+  loaded: boolean;
+  saveState: SaveState;
+  email: string | null;
+  signIn: (email: string, password: string) => Promise<string | null>;
+  signUp: (email: string, password: string) => Promise<string | null>;
+  signOut: () => Promise<void>;
 };
 
 const ContentCtx = createContext<Ctx | null>(null);
 
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const [content, setContent] = useState<Content>(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      return raw ? merge(defaultContent, JSON.parse(raw)) : defaultContent;
-    } catch {
-      return defaultContent;
-    }
-  });
-  const [blobUrls, setBlobUrls] = useState<Record<string, string>>({});
-  const [admin, setAdmin] = useState(
-    () => sessionStorage.getItem("amuma.admin") === "1",
-  );
+  const [content, setContent] = useState<Content>(defaultContent);
+  const [loaded, setLoaded] = useState(false);
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [admin, setAdminState] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const created = useRef<string[]>([]);
+  const [library, setLibrary] = useState<string[]>([]);
+  const dirty = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* load device media once */
+  /* ---------------------------------------------------------- load content */
   useEffect(() => {
     let alive = true;
-    getAllMedia().then((files) => {
-      if (!alive) return;
-      const map: Record<string, string> = {};
-      for (const [id, blob] of Object.entries(files)) {
-        const u = URL.createObjectURL(blob);
-        created.current.push(u);
-        map[id] = u;
-      }
-      setBlobUrls(map);
-    });
+    supabase
+      .from("site_content")
+      .select("data")
+      .eq("id", ROW_ID)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!alive) return;
+        const stored = (data?.data ?? null) as unknown;
+        if (stored && isObj(stored) && Object.keys(stored).length > 0) {
+          setContent(merge(defaultContent, stored));
+        }
+        setLoaded(true);
+      });
     return () => {
       alive = false;
     };
   }, []);
 
-  useEffect(
-    () => () => {
-      created.current.forEach((u) => URL.revokeObjectURL(u));
-    },
-    [],
-  );
-
-  /* persist */
-  useEffect(() => {
-    try {
-      localStorage.setItem(LS_KEY, JSON.stringify(content));
-    } catch {
-      /* quota — ignore */
+  /* ------------------------------------------------------------- auth/role */
+  const checkRole = useCallback(async (userId: string | undefined) => {
+    if (!userId) {
+      setAdminState(false);
+      return;
     }
-  }, [content]);
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (data) {
+      setAdminState(true);
+      return;
+    }
+    // No admin exists yet? the first signed-in account claims the site.
+    const { data: claimed } = await supabase.rpc("claim_admin");
+    setAdminState(claimed === true);
+  }, []);
 
-  /* apply theme (fonts, type roles, colors) */
+  useEffect(() => {
+    let alive = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!alive) return;
+      setEmail(data.session?.user.email ?? null);
+      void checkRole(data.session?.user.id);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      setEmail(session?.user.email ?? null);
+      if (event === "SIGNED_OUT") {
+        setAdminState(false);
+        setEditMode(false);
+      } else {
+        void checkRole(session?.user.id);
+      }
+    });
+    return () => {
+      alive = false;
+      sub.subscription.unsubscribe();
+    };
+  }, [checkRole]);
+
+  /* ------------------------------------------------------------ auto-save */
+  useEffect(() => {
+    if (!loaded || !admin || !dirty.current) return;
+    if (timer.current) clearTimeout(timer.current);
+    setSaveState("saving");
+    timer.current = setTimeout(async () => {
+      const { error } = await supabase
+        .from("site_content")
+        .upsert({ id: ROW_ID, data: content as never, updated_at: new Date().toISOString() });
+      setSaveState(error ? "error" : "saved");
+      if (!error) dirty.current = false;
+    }, 900);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, [content, admin, loaded]);
+
+  /* ------------------------------------- apply theme (fonts, type, colors) */
   useEffect(() => {
     const { theme } = content;
     const root = document.documentElement;
@@ -169,9 +231,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     const fams = [...new Set([content.theme.displayFont, content.theme.bodyFont])];
     const id = "amuma-fonts";
     const href =
-      "https://fonts.googleapis.com/css2?" +
-      fams.map(familyParam).join("&") +
-      "&display=swap";
+      "https://fonts.googleapis.com/css2?" + fams.map(familyParam).join("&") + "&display=swap";
     let link = document.getElementById(id) as HTMLLinkElement | null;
     if (!link) {
       link = document.createElement("link");
@@ -182,47 +242,87 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     if (link.href !== href) link.href = href;
   }, [content.theme.displayFont, content.theme.bodyFont]);
 
+  /* ------------------------------------------------------------- mutators */
   const update = useCallback((path: string, value: unknown) => {
+    dirty.current = true;
     setContent((c) => setPath(c, path, value));
   }, []);
 
-  const replace = useCallback((c: Content) => setContent(merge(defaultContent, c)), []);
-  const reset = useCallback(() => setContent(defaultContent), []);
+  const replace = useCallback((c: Content) => {
+    dirty.current = true;
+    setContent(merge(defaultContent, c));
+  }, []);
 
-  const mediaUrl = useCallback(
-    (ref: string) => {
-      if (!ref) return "";
-      if (ref.startsWith("idb:")) return blobUrls[ref.slice(4)] || "";
-      return ref;
+  const reset = useCallback(() => {
+    dirty.current = true;
+    setContent(defaultContent);
+  }, []);
+
+  /* ---------------------------------------------------------------- media */
+  const refreshLibrary = useCallback(async () => {
+    const { data } = await supabase.storage
+      .from(BUCKET)
+      .list("", { limit: 200, sortBy: { column: "created_at", order: "desc" } });
+    setLibrary((data ?? []).filter((f) => f.id).map((f) => `sb:${f.name}`));
+  }, []);
+
+  useEffect(() => {
+    if (admin) void refreshLibrary();
+    else setLibrary([]);
+  }, [admin, refreshLibrary]);
+
+  const addFile = useCallback(
+    async (file: File) => {
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase().slice(0, 5);
+      const path = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage
+        .from(BUCKET)
+        .upload(path, file, { cacheControl: "31536000", contentType: file.type || undefined });
+      if (error) {
+        alert(`Upload failed: ${error.message}`);
+        return "";
+      }
+      setLibrary((l) => [`sb:${path}`, ...l]);
+      return `sb:${path}`;
     },
-    [blobUrls],
+    [],
   );
 
-  const addFile = useCallback(async (file: File) => {
-    const id = await putMedia(file);
-    const url = URL.createObjectURL(file);
-    created.current.push(url);
-    setBlobUrls((m) => ({ ...m, [id]: url }));
-    return `idb:${id}`;
-  }, []);
-
   const removeFile = useCallback(async (ref: string) => {
-    const id = ref.startsWith("idb:") ? ref.slice(4) : ref;
-    await deleteMedia(id);
-    setBlobUrls((m) => {
-      const next = { ...m };
-      delete next[id];
-      return next;
+    const path = ref.startsWith("sb:") ? ref.slice(3) : ref;
+    await supabase.storage.from(BUCKET).remove([path]);
+    setLibrary((l) => l.filter((r) => r !== ref));
+  }, []);
+
+  const mediaUrl = useCallback((ref: string) => mediaSrc(ref), []);
+
+  /* ----------------------------------------------------------------- auth */
+  const signIn = useCallback(async (mail: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email: mail, password });
+    return error ? error.message : null;
+  }, []);
+
+  const signUp = useCallback(async (mail: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email: mail,
+      password,
+      options: { emailRedirectTo: window.location.origin },
     });
+    return error ? error.message : null;
   }, []);
 
-  const library = useMemo(() => Object.keys(blobUrls).map((id) => `idb:${id}`), [blobUrls]);
-
-  const setAdminPersist = useCallback((v: boolean) => {
-    sessionStorage.setItem("amuma.admin", v ? "1" : "0");
-    setAdmin(v);
-    if (!v) setEditMode(false);
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setAdminState(false);
+    setEditMode(false);
   }, []);
+
+  const setAdmin = useCallback(
+    (v: boolean) => {
+      if (!v) void signOut();
+    },
+    [signOut],
+  );
 
   const value = useMemo(
     () => ({
@@ -235,9 +335,15 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeFile,
       library,
       admin,
-      setAdmin: setAdminPersist,
+      setAdmin,
       editMode: admin && editMode,
       setEditMode,
+      loaded,
+      saveState,
+      email,
+      signIn,
+      signUp,
+      signOut,
     }),
     [
       content,
@@ -249,8 +355,14 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       removeFile,
       library,
       admin,
-      setAdminPersist,
+      setAdmin,
       editMode,
+      loaded,
+      saveState,
+      email,
+      signIn,
+      signUp,
+      signOut,
     ],
   );
 
