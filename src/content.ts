@@ -12,6 +12,13 @@ export type MediaBlock = {
   youtube: string;
 };
 
+/** One photo or video added to a section from the admin editor. */
+export type GalleryItem = {
+  kind: "image" | "video";
+  src: string;
+  caption: string;
+};
+
 export type SectionRef = {
   id: string;
   type: string;
