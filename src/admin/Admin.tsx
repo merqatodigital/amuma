@@ -822,9 +822,15 @@ export default function Admin() {
               onChange={(e) => importJson(e.target.files?.[0])}
             />
             <p className="col-span-3 mt-1 text-[10px] leading-relaxed text-white/30">
-              Changes save automatically to this browser. {Object.keys(defaultContent).length}{" "}
-              editable groups · Alt+Shift+A toggles this panel.
+              {saveState === "saving"
+                ? "Saving to the cloud…"
+                : saveState === "error"
+                  ? "Could not save — check your connection."
+                  : "Changes save automatically to the cloud for every visitor."}{" "}
+              Signed in as {email ?? "—"} · {Object.keys(defaultContent).length} editable groups ·
+              Alt+Shift+A toggles this panel.
             </p>
+
           </footer>
         </aside>
       )}
