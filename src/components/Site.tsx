@@ -40,8 +40,7 @@ function Sections() {
         .filter((s) => s.enabled)
         .map((s) => {
           const C = REGISTRY[s.type];
-          const body =
-            s.type === "custom" ? <CustomSection id={s.id} /> : C ? <C /> : null;
+          const body = s.type === "custom" ? <CustomSection id={s.id} /> : C ? <C /> : null;
           return (
             <div key={s.id}>
               {body}
@@ -53,9 +52,9 @@ function Sections() {
   );
 }
 
-export default function Site() {
+export default function Site({ siteId }: { siteId?: string } = {}) {
   return (
-    <ContentProvider>
+    <ContentProvider siteId={siteId}>
       <div className="min-h-screen bg-sand-50 text-bark-800 antialiased">
         <Nav />
         <main>

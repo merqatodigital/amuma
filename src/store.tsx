@@ -13,7 +13,6 @@ import { youtubeId } from "./lib/media";
 import { familyParam } from "./admin/fonts";
 import { supabase } from "@/integrations/supabase/client";
 
-const ROW_ID = "main";
 const BUCKET = "site-media";
 
 /* ------------------------------------------------------------- utilities */
@@ -93,11 +92,16 @@ type Ctx = {
 
 const ContentCtx = createContext<Ctx | null>(null);
 
-export function ContentProvider({ children }: { children: ReactNode }) {
+export function ContentProvider({
+  children,
+  siteId = "main",
+}: {
+  children: ReactNode;
+  siteId?: string;
+}) {
   const [content, setContent] = useState<Content>(defaultContent);
   const [loaded, setLoaded] = useState(false);
   const [saveState, setSaveState] = useState<SaveState>("idle");
-  // Build mode: the site is openly editable — no admin login while we build.
   const [admin, setAdminState] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
   const [editMode, setEditMode] = useState(false);
@@ -111,7 +115,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     supabase
       .from("site_content")
       .select("data")
-      .eq("id", ROW_ID)
+      .eq("site_id", siteId)
       .maybeSingle()
       .then(({ data }) => {
         if (!alive) return;
@@ -124,7 +128,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [siteId]);
 
   /* ------------------------------------------------------------ auto-save */
   useEffect(() => {
@@ -134,7 +138,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     timer.current = setTimeout(async () => {
       const { error } = await supabase
         .from("site_content")
-        .upsert({ id: ROW_ID, data: content as never, updated_at: new Date().toISOString() });
+        .upsert({ site_id: siteId, data: content as never, updated_at: new Date().toISOString() });
       setSaveState(error ? "error" : "saved");
       if (!error) dirty.current = false;
     }, 900);
@@ -186,7 +190,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   /* load the two chosen Google fonts */
   useEffect(() => {
     const fams = [...new Set([content.theme.displayFont, content.theme.bodyFont])];
-    const id = "amuma-fonts";
+    const id = "merqato-fonts";
     const href =
       "https://fonts.googleapis.com/css2?" + fams.map(familyParam).join("&") + "&display=swap";
     let link = document.getElementById(id) as HTMLLinkElement | null;
@@ -266,6 +270,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
     setEditMode(false);
   }, []);
 

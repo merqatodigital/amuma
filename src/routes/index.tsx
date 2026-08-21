@@ -3,6 +3,9 @@ import Site from "@/components/Site";
 
 export const Route = createFileRoute("/")({
   ssr: false,
+  validateSearch: (search: Record<string, unknown>) => ({
+    site: (search.site as string) || "main",
+  }),
   head: () => ({
     meta: [
       { title: "AMUMA · Barefoot Boutique Resorts" },
@@ -25,5 +28,6 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  return <Site />;
+  const { site } = Route.useSearch();
+  return <Site siteId={site} />;
 }

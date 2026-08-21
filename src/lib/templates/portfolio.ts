@@ -1,0 +1,63 @@
+import type { TemplateMeta } from ".";
+
+export const portfolio: TemplateMeta = {
+  id: "portfolio",
+  name: "Portfolio & Personal",
+  description: "Clean, minimal design for creatives, freelancers, and personal brands.",
+  thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+  category: "creative",
+  isPro: false,
+  price: 0,
+  sections: [
+    { id: "hero", type: "hero", label: "Hero", enabled: true },
+    { id: "about", type: "about", label: "About", enabled: true },
+    { id: "work", type: "work", label: "Selected Work", enabled: true },
+    { id: "services", type: "services", label: "Services", enabled: true },
+    { id: "testimonials", type: "testimonials", label: "Testimonials", enabled: true },
+    { id: "contact", type: "contact", label: "Contact", enabled: true },
+  ],
+  defaultTheme: {
+    displayFont: "Space Grotesk",
+    bodyFont: "Inter",
+    headingScale: 1,
+    type: {
+      heading: { weight: 500, tracking: -0.02, transform: "none" },
+      brand: { weight: 600, tracking: 0.12, transform: "none" },
+      eyebrow: { size: 11, weight: 500, tracking: 0.2, transform: "uppercase" },
+      button: { size: 12, weight: 500, tracking: 0.16, transform: "uppercase" },
+      nav: { size: 13, weight: 400, tracking: 0.04, transform: "none" },
+      body: { weight: 400, lineHeight: 1.7 },
+    },
+    colors: {
+      sand50: "#f8f8f8", sand100: "#f0f0f0", sand200: "#e4e4e4", sand300: "#d1d1d1", sand400: "#a3a3a3",
+      clay500: "#737373", clay600: "#525252",
+      bark700: "#262626", bark800: "#1a1a1a", bark900: "#0a0a0a",
+    },
+  },
+  defaultNav: {
+    brand: "YOUR NAME",
+    tagline: "Designer & Creative",
+    links: [
+      { label: "Work", href: "#work" },
+      { label: "About", href: "#about" },
+      { label: "Services", href: "#services" },
+      { label: "Contact", href: "#contact" },
+    ],
+    ctaLabel: "Let's Talk",
+    ctaHref: "#contact",
+  },
+  defaultHero: {
+    enabled: true,
+    media: { type: "image", image: "/images/hero.jpg", video: "", youtube: "" },
+    overlay: 35,
+    title: "YOUR NAME",
+    tagline: "Designer & Creative",
+    headline: "Designing with purpose",
+    subline: "I craft thoughtful digital experiences that connect brands with people.",
+    primaryLabel: "View Work",
+    primaryHref: "#work",
+    secondaryLabel: "Get in Touch",
+    secondaryHref: "#contact",
+    scrollLabel: "Scroll",
+  },
+};
