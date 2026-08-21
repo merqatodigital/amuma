@@ -14,16 +14,30 @@ export const Route = createFileRoute("/api/public/media/$")({
           return new Response("Not found", { status: 404 });
         }
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data, error } = await supabaseAdmin.storage.from("site-media").download(path);
-        if (error || !data) return new Response("Not found", { status: 404 });
+        try {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data, error } = await supabaseAdmin.storage.from("site-media").download(path);
+          if (error || !data) return new Response("Not found", { status: 404 });
 
-        return new Response(await data.arrayBuffer(), {
-          headers: {
-            "Content-Type": data.type || "application/octet-stream",
-            "Cache-Control": "public, max-age=31536000, immutable",
-          },
-        });
+          const ext = path.split(".").pop()?.toLowerCase() ?? "";
+          const guessed =
+            ext === "mp4"
+              ? "video/mp4"
+              : ext === "webm"
+                ? "video/webm"
+                : ext === "mov"
+                  ? "video/quicktime"
+                  : "application/octet-stream";
+
+          return new Response(await data.arrayBuffer(), {
+            headers: {
+              "Content-Type": data.type || guessed,
+              "Cache-Control": "public, max-age=31536000, immutable",
+            },
+          });
+        } catch {
+          return new Response("Not found", { status: 404 });
+        }
       },
     },
   },

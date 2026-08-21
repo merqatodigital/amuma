@@ -12,6 +12,13 @@ export type MediaBlock = {
   youtube: string;
 };
 
+/** One photo or video added to a section from the admin editor. */
+export type GalleryItem = {
+  kind: "image" | "video";
+  src: string;
+  caption: string;
+};
+
 export type SectionRef = {
   id: string;
   type: string;
@@ -103,6 +110,13 @@ export const defaultContent = {
 
   /** Extra sections the client creates themselves, keyed by section id. */
   custom: {} as Record<string, CustomSection>,
+
+  /**
+   * Extra photos / videos the admin adds to any section, keyed by section id
+   * ("hero", "vision", … or a custom section id). Uploaded from the device and
+   * stored in the cloud media bucket.
+   */
+  galleries: {} as Record<string, GalleryItem[]>,
 
   nav: {
     brand: "AMUMA",

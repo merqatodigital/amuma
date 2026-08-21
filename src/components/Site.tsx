@@ -4,6 +4,7 @@ import Hero from "./Hero";
 import Admin from "../admin/Admin";
 import { ContentProvider, useContent } from "../store";
 import CustomSection from "../sections/Custom";
+import SectionMedia from "./SectionMedia";
 import { Circle, Experience, Meaning, Vision } from "../sections/Story";
 import { Future, Hidden, Palawan, Roadmap, SanVicente } from "../sections/Places";
 import { Calculator, Flywheel, Revenue, Tiers, Usage } from "../sections/Model";
@@ -38,9 +39,15 @@ function Sections() {
       {sections
         .filter((s) => s.enabled)
         .map((s) => {
-          if (s.type === "custom") return <CustomSection key={s.id} id={s.id} />;
           const C = REGISTRY[s.type];
-          return C ? <C key={s.id} /> : null;
+          const body =
+            s.type === "custom" ? <CustomSection id={s.id} /> : C ? <C /> : null;
+          return (
+            <div key={s.id}>
+              {body}
+              <SectionMedia id={s.id} />
+            </div>
+          );
         })}
     </>
   );
@@ -53,6 +60,7 @@ export default function Site() {
         <Nav />
         <main>
           <Hero />
+          <SectionMedia id="hero" />
           <Sections />
         </main>
         <Footer />
