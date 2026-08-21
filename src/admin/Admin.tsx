@@ -656,20 +656,43 @@ export default function Admin() {
             className="w-full max-w-xs rounded-xl border border-white/15 bg-[#191612] p-7 text-white"
           >
             <div className="text-[10px] tracking-[0.3em] text-white/40 uppercase">AMUMA</div>
-            <h3 className="mt-2 font-display text-2xl font-light">Admin access</h3>
+            <h3 className="mt-2 font-display text-2xl font-light">
+              {mode === "in" ? "Admin sign in" : "Create admin account"}
+            </h3>
             <input
               autoFocus
-              type="password"
-              inputMode="numeric"
-              value={code}
+              type="email"
+              autoComplete="email"
+              value={mail}
               onChange={(e) => {
-                setCode(e.target.value);
-                setErr(false);
+                setMail(e.target.value);
+                setErr(null);
               }}
-              placeholder="Pass key"
-              className={`${inputCls} mt-6 text-center text-lg tracking-[0.5em]`}
+              placeholder="Email"
+              className={`${inputCls} mt-6`}
             />
-            {err && <p className="mt-2 text-[11px] text-red-400">Incorrect pass key.</p>}
+            <input
+              type="password"
+              autoComplete={mode === "in" ? "current-password" : "new-password"}
+              value={pass}
+              onChange={(e) => {
+                setPass(e.target.value);
+                setErr(null);
+              }}
+              placeholder="Password"
+              className={`${inputCls} mt-2`}
+            />
+            {err && <p className="mt-2 text-[11px] text-red-400">{err}</p>}
+            <button
+              type="button"
+              onClick={() => {
+                setMode(mode === "in" ? "up" : "in");
+                setErr(null);
+              }}
+              className="mt-3 text-[10px] tracking-[0.14em] text-white/45 uppercase hover:text-white"
+            >
+              {mode === "in" ? "Create an account" : "I already have an account"}
+            </button>
             <div className="mt-5 flex gap-2">
               <button
                 type="button"
@@ -680,11 +703,13 @@ export default function Admin() {
               </button>
               <button
                 type="submit"
-                className="flex-1 rounded bg-white py-2.5 text-[10px] tracking-[0.18em] text-black uppercase hover:bg-white/85"
+                disabled={busyAuth}
+                className="flex-1 rounded bg-white py-2.5 text-[10px] tracking-[0.18em] text-black uppercase hover:bg-white/85 disabled:opacity-50"
               >
-                Enter
+                {busyAuth ? "…" : mode === "in" ? "Enter" : "Sign up"}
               </button>
             </div>
+
           </form>
         </div>
       )}
