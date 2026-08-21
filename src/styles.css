@@ -142,3 +142,168 @@
     color: var(--color-foreground);
   }
 }
+
+/* ------------------------------------------------------------------ *
+ *  AMUMA site theme
+ * ------------------------------------------------------------------ */
+
+@theme {
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --color-sand-50: #fbf9f5;
+  --color-sand-100: #f5f0e7;
+  --color-sand-200: #ebe3d5;
+  --color-sand-300: #dbcfba;
+  --color-sand-400: #c4b092;
+  --color-clay-500: #a08863;
+  --color-clay-600: #7d6748;
+  --color-bark-700: #4a4034;
+  --color-bark-800: #332d25;
+  --color-bark-900: #221e19;
+  --color-lagoon-400: #7fa9a3;
+  --color-lagoon-600: #4b7c78;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --heading-scale: 1;
+  --heading-weight: 300;
+  --heading-tracking: -0.01em;
+  --heading-transform: none;
+  --brand-weight: 300;
+  --brand-tracking: 0.16em;
+  --brand-transform: none;
+  --eyebrow-size: 10px;
+  --eyebrow-weight: 400;
+  --eyebrow-tracking: 0.32em;
+  --eyebrow-transform: uppercase;
+  --btn-size: 11px;
+  --btn-weight: 400;
+  --btn-tracking: 0.24em;
+  --btn-transform: uppercase;
+  --nav-size: 11px;
+  --nav-weight: 400;
+  --nav-tracking: 0.22em;
+  --nav-transform: uppercase;
+  --body-weight: 300;
+  --body-line: 1.9;
+}
+
+body {
+  background-color: var(--color-sand-50);
+  color: var(--color-bark-800);
+  font-family: var(--font-sans);
+  font-weight: var(--body-weight);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-bark-800);
+  color: var(--color-sand-100);
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-sand-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sand-300);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-clay-500);
+}
+
+@utility tracking-luxe {
+  letter-spacing: 0.32em;
+}
+
+@keyframes amuma-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: amuma-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes amuma-scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+.scroll-hint {
+  animation: amuma-scroll-hint 2.4s ease-in-out infinite;
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+}
+
+/* Typography roles (driven by Admin → Design) */
+.t-heading {
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+}
+.t-brand {
+  font-weight: var(--brand-weight);
+  letter-spacing: var(--brand-tracking);
+  text-indent: var(--brand-tracking);
+  text-transform: var(--brand-transform);
+}
+.t-eyebrow {
+  font-size: var(--eyebrow-size);
+  font-weight: var(--eyebrow-weight);
+  letter-spacing: var(--eyebrow-tracking);
+  text-transform: var(--eyebrow-transform);
+}
+.t-btn {
+  font-size: var(--btn-size);
+  font-weight: var(--btn-weight);
+  letter-spacing: var(--btn-tracking);
+  text-transform: var(--btn-transform);
+}
+.t-nav {
+  font-size: var(--nav-size);
+  font-weight: var(--nav-weight);
+  letter-spacing: var(--nav-tracking);
+  text-transform: var(--nav-transform);
+}
+.t-body {
+  line-height: var(--body-line);
+}
+
+/* Inline editing */
+[contenteditable="true"] {
+  white-space: pre-wrap;
+}
+[contenteditable="true"]:empty::before {
+  content: attr(data-ph);
+  opacity: 0.45;
+}
+[contenteditable="true"]:focus {
+  cursor: text;
+}
