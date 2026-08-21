@@ -6,7 +6,6 @@ import { compressImage, downloadUrl } from "../lib/media";
 import Design from "./Design";
 import SectionsManager from "./Sections";
 
-
 const TABS: { key: string; label: string }[] = [
   { key: "__sections", label: "★ Sections — add / delete / order" },
   { key: "__design", label: "★ Design — colour & typography" },
@@ -311,7 +310,11 @@ function Node({ path, keyName, value }: { path: string; keyName: string; value: 
               onChange={(e) => update(path, e.target.value)}
               className="h-9 w-12 cursor-pointer rounded border border-white/15 bg-transparent"
             />
-            <input className={inputCls} value={value} onChange={(e) => update(path, e.target.value)} />
+            <input
+              className={inputCls}
+              value={value}
+              onChange={(e) => update(path, e.target.value)}
+            />
           </div>
         </Row>
       );
@@ -355,7 +358,8 @@ function Node({ path, keyName, value }: { path: string; keyName: string; value: 
       const t = value[0] as Record<string, unknown>;
       const o: Record<string, unknown> = {};
       Object.entries(t || {}).forEach(([k, v]) => {
-        o[k] = typeof v === "number" ? 0 : typeof v === "boolean" ? true : Array.isArray(v) ? [] : "";
+        o[k] =
+          typeof v === "number" ? 0 : typeof v === "boolean" ? true : Array.isArray(v) ? [] : "";
       });
       return o;
     };
@@ -382,7 +386,10 @@ function Node({ path, keyName, value }: { path: string; keyName: string; value: 
                     key={sym}
                     onClick={() =>
                       k === 2
-                        ? update(path, value.filter((_, x) => x !== i))
+                        ? update(
+                            path,
+                            value.filter((_, x) => x !== i),
+                          )
                         : move(i, k === 0 ? -1 : 1)
                     }
                     className="h-6 w-6 rounded border border-white/15 text-[11px] text-white/60 hover:bg-white/10"
@@ -396,7 +403,12 @@ function Node({ path, keyName, value }: { path: string; keyName: string; value: 
               <textarea
                 className={`${inputCls} min-h-[54px] resize-y`}
                 value={item as string}
-                onChange={(e) => update(path, value.map((v, x) => (x === i ? e.target.value : v)))}
+                onChange={(e) =>
+                  update(
+                    path,
+                    value.map((v, x) => (x === i ? e.target.value : v)),
+                  )
+                }
               />
             ) : (
               <div className="space-y-3">
@@ -453,7 +465,9 @@ function MediaLibrary() {
     for (const f of Array.from(files)) {
       const out = await compressImage(f);
       const file =
-        out instanceof File ? out : new File([out], f.name.replace(/\.\w+$/, ".jpg"), { type: out.type });
+        out instanceof File
+          ? out
+          : new File([out], f.name.replace(/\.\w+$/, ".jpg"), { type: out.type });
       await addFile(file);
     }
     setBusy(false);
@@ -485,13 +499,16 @@ function MediaLibrary() {
       />
 
       <p className="text-[10px] leading-relaxed text-white/35">
-        {library.length} file{library.length === 1 ? "" : "s"} stored in the cloud media library. Copy a
-        reference to paste it into any image field.
+        {library.length} file{library.length === 1 ? "" : "s"} stored in the cloud media library.
+        Copy a reference to paste it into any image field.
       </p>
 
       <div className="grid grid-cols-3 gap-2">
         {library.map((ref_) => (
-          <div key={ref_} className="group relative aspect-square overflow-hidden rounded border border-white/12">
+          <div
+            key={ref_}
+            className="group relative aspect-square overflow-hidden rounded border border-white/12"
+          >
             <img src={mediaUrl(ref_)} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/70 opacity-0 transition-opacity group-hover:opacity-100">
               <button
@@ -580,7 +597,6 @@ export default function Admin() {
     setPass("");
   }
 
-
   function exportJson() {
     const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
@@ -617,7 +633,14 @@ export default function Admin() {
           title="Admin"
           className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:scale-105 hover:text-white"
         >
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+          >
             <circle cx="12" cy="12" r="3.2" />
             <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" />
           </svg>
@@ -632,7 +655,14 @@ export default function Admin() {
                 : "border-white/25 bg-black/60 text-white/75 hover:text-white"
             }`}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+            >
               <path d="M12 20h9" />
               <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
             </svg>
@@ -645,7 +675,8 @@ export default function Admin() {
       {admin && editMode && (
         <div className="pointer-events-none fixed inset-x-0 top-0 z-[65] flex justify-center pt-20">
           <div className="pointer-events-auto rounded-full border border-sky-400/40 bg-sky-950/85 px-5 py-2 text-[10px] tracking-[0.16em] text-sky-100 uppercase shadow-lg backdrop-blur">
-            Click text to rewrite · click empty image area or "Upload" to change · "Save" to download
+            Click text to rewrite · click empty image area or "Upload" to change · "Save" to
+            download
           </div>
         </div>
       )}
@@ -711,7 +742,6 @@ export default function Admin() {
                 {busyAuth ? "…" : mode === "in" ? "Enter" : "Sign up"}
               </button>
             </div>
-
           </form>
         </div>
       )}
@@ -830,10 +860,8 @@ export default function Admin() {
                 : saveState === "error"
                   ? "Could not save — check your connection."
                   : "Changes save automatically to the cloud for every visitor."}{" "}
-              {Object.keys(defaultContent).length} editable groups · Alt+Shift+A toggles this
-              panel.
+              {Object.keys(defaultContent).length} editable groups · Alt+Shift+A toggles this panel.
             </p>
-
           </footer>
         </aside>
       )}

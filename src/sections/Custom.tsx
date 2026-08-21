@@ -17,19 +17,18 @@ export default function CustomSection({ id }: { id: string }) {
   const bg = dark ? "" : c.tone === "muted" ? "bg-sand-100" : "bg-sand-50";
   const bodyTone = dark ? "text-sand-200/85" : "text-bark-700";
 
-  const cta =
-    (c.ctaLabel || editMode) && (
-      <a
-        href={editMode ? undefined : c.ctaHref}
-        className={`t-btn mt-9 inline-block border px-9 py-3.5 transition-colors duration-300 ${
-          dark
-            ? "border-sand-100/60 hover:bg-sand-50 hover:text-bark-900"
-            : "border-bark-800 hover:bg-bark-800 hover:text-sand-50"
-        }`}
-      >
-        <T path={`${p}.ctaLabel`} placeholder="Button…" />
-      </a>
-    );
+  const cta = (c.ctaLabel || editMode) && (
+    <a
+      href={editMode ? undefined : c.ctaHref}
+      className={`t-btn mt-9 inline-block border px-9 py-3.5 transition-colors duration-300 ${
+        dark
+          ? "border-sand-100/60 hover:bg-sand-50 hover:text-bark-900"
+          : "border-bark-800 hover:bg-bark-800 hover:text-sand-50"
+      }`}
+    >
+      <T path={`${p}.ctaLabel`} placeholder="Button…" />
+    </a>
+  );
 
   /* ---------------------------------------------------------- banner */
   if (c.layout === "banner")
@@ -77,7 +76,11 @@ export default function CustomSection({ id }: { id: string }) {
             >
               <ItemTools path={`${p}.cards`} index={i} className="top-2! right-2!" />
               <div className="relative aspect-[4/3] overflow-hidden">
-                <EImg path={`${p}.cards.${i}.image`} alt="" className="h-full w-full object-cover" />
+                <EImg
+                  path={`${p}.cards.${i}.image`}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="p-7">
                 <T

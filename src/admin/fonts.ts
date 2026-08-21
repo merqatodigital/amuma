@@ -12,14 +12,44 @@ const W_REG = "400";
 
 export const FONTS: FontDef[] = [
   // Serif & display
-  { name: "Cormorant Garamond", group: "Serif / Display", note: "Default · airy classical", weights: W_MID },
-  { name: "Playfair Display", group: "Serif / Display", note: "High-contrast editorial", weights: "400;500;600;700" },
-  { name: "EB Garamond", group: "Serif / Display", note: "Old-style, literary", weights: "400;500;600;700" },
-  { name: "Libre Baskerville", group: "Serif / Display", note: "Sturdy transitional", weights: "400;700" },
-  { name: "Lora", group: "Serif / Display", note: "Warm, brushed curves", weights: "400;500;600;700" },
+  {
+    name: "Cormorant Garamond",
+    group: "Serif / Display",
+    note: "Default · airy classical",
+    weights: W_MID,
+  },
+  {
+    name: "Playfair Display",
+    group: "Serif / Display",
+    note: "High-contrast editorial",
+    weights: "400;500;600;700",
+  },
+  {
+    name: "EB Garamond",
+    group: "Serif / Display",
+    note: "Old-style, literary",
+    weights: "400;500;600;700",
+  },
+  {
+    name: "Libre Baskerville",
+    group: "Serif / Display",
+    note: "Sturdy transitional",
+    weights: "400;700",
+  },
+  {
+    name: "Lora",
+    group: "Serif / Display",
+    note: "Warm, brushed curves",
+    weights: "400;500;600;700",
+  },
   { name: "Spectral", group: "Serif / Display", note: "Screen-first serif", weights: W_FULL },
   { name: "Crimson Pro", group: "Serif / Display", note: "Book-like elegance", weights: W_FULL },
-  { name: "Bodoni Moda", group: "Serif / Display", note: "Fashion didone", weights: "400;500;600;700" },
+  {
+    name: "Bodoni Moda",
+    group: "Serif / Display",
+    note: "Fashion didone",
+    weights: "400;500;600;700",
+  },
   { name: "DM Serif Display", group: "Serif / Display", note: "Tight, confident", weights: W_REG },
   { name: "Fraunces", group: "Serif / Display", note: "Soft, characterful", weights: W_MID },
   { name: "Marcellus", group: "Serif / Display", note: "Roman inscriptional", weights: W_REG },
@@ -29,7 +59,12 @@ export const FONTS: FontDef[] = [
   { name: "Gilda Display", group: "Serif / Display", note: "Delicate luxury", weights: W_REG },
   { name: "Instrument Serif", group: "Serif / Display", note: "Modern condensed", weights: W_REG },
   { name: "Tenor Sans", group: "Serif / Display", note: "Humanist, gallery-like", weights: W_REG },
-  { name: "Syne", group: "Serif / Display", note: "Contemporary art-house", weights: "400;500;600;700;800" },
+  {
+    name: "Syne",
+    group: "Serif / Display",
+    note: "Contemporary art-house",
+    weights: "400;500;600;700;800",
+  },
 
   // Sans & text
   { name: "Jost", group: "Sans / Text", note: "Default · geometric futura", weights: W_FULL },

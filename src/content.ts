@@ -195,13 +195,7 @@ export const defaultContent = {
     pebblesTitle: "The internal currency",
     pebblesBody:
       "Pebbles are the lifestyle currency of the AMUMA ecosystem. Circle Members receive a new batch every year and use them across the retreats — from reserving accommodation to booking a private dinner, excursions, spa treatments and curated activities.",
-    pebblesChips: [
-      "Suite & villa nights",
-      "Dining",
-      "Excursions",
-      "Boat trips",
-      "Spa treatments",
-    ],
+    pebblesChips: ["Suite & villa nights", "Dining", "Excursions", "Boat trips", "Spa treatments"],
     pebblesNote: "Pebbles expire every 9 July · a new batch is released 10 July",
   },
 
@@ -314,15 +308,39 @@ export const defaultContent = {
     eyebrow: "09 — Roadmap",
     title: "The chapters ahead",
     items: [
-      { year: "2026", title: "AMUMA San Vicente", body: "Construction begins and the first Circle Members join." },
-      { year: "2028", title: "AMUMA San Vicente opens", body: "First guests welcomed, rental income begins." },
+      {
+        year: "2026",
+        title: "AMUMA San Vicente",
+        body: "Construction begins and the first Circle Members join.",
+      },
+      {
+        year: "2028",
+        title: "AMUMA San Vicente opens",
+        body: "First guests welcomed, rental income begins.",
+      },
       { year: "2029", title: "AMUMA Balabac groundbreaking", body: "New Circle Units offering." },
-      { year: "2030", title: "Philippines expansion", body: "Land acquisition and programming of new Philippine destinations." },
+      {
+        year: "2030",
+        title: "Philippines expansion",
+        body: "Land acquisition and programming of new Philippine destinations.",
+      },
       { year: "2031", title: "AMUMA Balabac opens", body: "Beachfront flagship AMUMA." },
       { year: "2032", title: "Indonesia land acquisition", body: "Togean Islands." },
-      { year: "2032", title: "Groundbreaking Bukidnon / Sibuyan", body: "Expansion development in new Philippine locations." },
-      { year: "2033", title: "Bukidnon or Sibuyan opens", body: "Expansion across the Philippines begins." },
-      { year: "2035", title: "AMUMA Togean opens", body: "First international hideaway. International expansion begins." },
+      {
+        year: "2032",
+        title: "Groundbreaking Bukidnon / Sibuyan",
+        body: "Expansion development in new Philippine locations.",
+      },
+      {
+        year: "2033",
+        title: "Bukidnon or Sibuyan opens",
+        body: "Expansion across the Philippines begins.",
+      },
+      {
+        year: "2035",
+        title: "AMUMA Togean opens",
+        body: "First international hideaway. International expansion begins.",
+      },
     ],
   },
 
@@ -484,8 +502,7 @@ export const defaultContent = {
     enabled: true,
     eyebrow: "17 — Founding Circle",
     title: "Join the Founding Circle",
-    intro:
-      "Twenty exclusive Nova places at ₱500,000 — the first members of the AMUMA story.",
+    intro: "Twenty exclusive Nova places at ₱500,000 — the first members of the AMUMA story.",
     bullets: [
       "₱500,000 investment · Nova tier",
       "50 Circle Units",

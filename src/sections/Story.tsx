@@ -259,26 +259,24 @@ export function Experience() {
         </div>
 
         <div className="relative aspect-[4/5] overflow-hidden lg:col-span-7 lg:aspect-auto lg:min-h-[520px]">
-          {editMode ? (
-            items[idx] && (
-              <EImg
-                path={`experience.items.${idx}.image`}
-                alt={items[idx].title}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            )
-          ) : (
-            items.map((e, i) => (
-              <Img
-                key={i}
-                src={e.image}
-                alt={e.title}
-                className={`absolute inset-0 h-full w-full object-cover transition-all duration-[1200ms] ease-out ${
-                  idx === i ? "scale-100 opacity-100" : "scale-105 opacity-0"
-                }`}
-              />
-            ))
-          )}
+          {editMode
+            ? items[idx] && (
+                <EImg
+                  path={`experience.items.${idx}.image`}
+                  alt={items[idx].title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              )
+            : items.map((e, i) => (
+                <Img
+                  key={i}
+                  src={e.image}
+                  alt={e.title}
+                  className={`absolute inset-0 h-full w-full object-cover transition-all duration-[1200ms] ease-out ${
+                    idx === i ? "scale-100 opacity-100" : "scale-105 opacity-0"
+                  }`}
+                />
+              ))}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bark-900/50 to-transparent" />
         </div>
       </div>

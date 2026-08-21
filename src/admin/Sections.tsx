@@ -99,7 +99,9 @@ export default function SectionsManager({ onJump }: { onJump: (tab: string) => v
           <div
             key={s.id}
             className={`rounded-lg border p-3 transition-colors ${
-              s.enabled ? "border-white/15 bg-white/[0.04]" : "border-white/8 bg-transparent opacity-50"
+              s.enabled
+                ? "border-white/15 bg-white/[0.04]"
+                : "border-white/8 bg-transparent opacity-50"
             }`}
           >
             <div className="flex items-center gap-2">
@@ -131,8 +133,12 @@ export default function SectionsManager({ onJump }: { onJump: (tab: string) => v
             </div>
 
             <div className="mt-2.5 flex items-center gap-1">
-              <button title="Move up" className={chip} onClick={() => move(i, -1)}>↑</button>
-              <button title="Move down" className={chip} onClick={() => move(i, 1)}>↓</button>
+              <button title="Move up" className={chip} onClick={() => move(i, -1)}>
+                ↑
+              </button>
+              <button title="Move down" className={chip} onClick={() => move(i, 1)}>
+                ↓
+              </button>
               <button
                 onClick={() => onJump(s.type === "custom" ? `custom.${s.id}` : s.type)}
                 className="rounded border border-white/15 px-2.5 py-1 text-[9px] tracking-[0.14em] text-white/70 uppercase hover:bg-white/10"

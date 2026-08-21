@@ -11,54 +11,96 @@ export const PALETTES: { name: string; note: string; colors: Palette }[] = [
     name: "Amuma Sand",
     note: "Original · ivory & bark",
     colors: {
-      sand50: "#fbf9f5", sand100: "#f5f0e7", sand200: "#ebe3d5", sand300: "#dbcfba",
-      sand400: "#c4b092", clay500: "#a08863", clay600: "#7d6748",
-      bark700: "#4a4034", bark800: "#332d25", bark900: "#221e19",
+      sand50: "#fbf9f5",
+      sand100: "#f5f0e7",
+      sand200: "#ebe3d5",
+      sand300: "#dbcfba",
+      sand400: "#c4b092",
+      clay500: "#a08863",
+      clay600: "#7d6748",
+      bark700: "#4a4034",
+      bark800: "#332d25",
+      bark900: "#221e19",
     },
   },
   {
     name: "Lagoon",
     note: "Cool sea greens",
     colors: {
-      sand50: "#f6faf9", sand100: "#e9f2f0", sand200: "#d6e6e3", sand300: "#b3d1cc",
-      sand400: "#84b3ac", clay500: "#4e8b84", clay600: "#376d67",
-      bark700: "#2b4b47", bark800: "#1d3532", bark900: "#122320",
+      sand50: "#f6faf9",
+      sand100: "#e9f2f0",
+      sand200: "#d6e6e3",
+      sand300: "#b3d1cc",
+      sand400: "#84b3ac",
+      clay500: "#4e8b84",
+      clay600: "#376d67",
+      bark700: "#2b4b47",
+      bark800: "#1d3532",
+      bark900: "#122320",
     },
   },
   {
     name: "Volcanic",
     note: "Charcoal & warm ash",
     colors: {
-      sand50: "#f7f6f4", sand100: "#eceae6", sand200: "#dcd8d2", sand300: "#c2bcb3",
-      sand400: "#a09890", clay500: "#7d746c", clay600: "#5d554e",
-      bark700: "#3d3833", bark800: "#272320", bark900: "#171412",
+      sand50: "#f7f6f4",
+      sand100: "#eceae6",
+      sand200: "#dcd8d2",
+      sand300: "#c2bcb3",
+      sand400: "#a09890",
+      clay500: "#7d746c",
+      clay600: "#5d554e",
+      bark700: "#3d3833",
+      bark800: "#272320",
+      bark900: "#171412",
     },
   },
   {
     name: "Sunset Clay",
     note: "Terracotta & rose",
     colors: {
-      sand50: "#fdf8f5", sand100: "#f8ebe4", sand200: "#f0d9cd", sand300: "#e0b8a4",
-      sand400: "#cd9077", clay500: "#b06a4d", clay600: "#8d4f36",
-      bark700: "#5f3626", bark800: "#40251a", bark900: "#2a1811",
+      sand50: "#fdf8f5",
+      sand100: "#f8ebe4",
+      sand200: "#f0d9cd",
+      sand300: "#e0b8a4",
+      sand400: "#cd9077",
+      clay500: "#b06a4d",
+      clay600: "#8d4f36",
+      bark700: "#5f3626",
+      bark800: "#40251a",
+      bark900: "#2a1811",
     },
   },
   {
     name: "Midnight Palm",
     note: "Deep green & gold",
     colors: {
-      sand50: "#f8faf6", sand100: "#eef2e9", sand200: "#dde5d4", sand300: "#bfcdb0",
-      sand400: "#9aae86", clay500: "#c2a15c", clay600: "#96793e",
-      bark700: "#2f4030", bark800: "#1d2a1f", bark900: "#111a13",
+      sand50: "#f8faf6",
+      sand100: "#eef2e9",
+      sand200: "#dde5d4",
+      sand300: "#bfcdb0",
+      sand400: "#9aae86",
+      clay500: "#c2a15c",
+      clay600: "#96793e",
+      bark700: "#2f4030",
+      bark800: "#1d2a1f",
+      bark900: "#111a13",
     },
   },
   {
     name: "Pearl",
     note: "Cool minimal greys",
     colors: {
-      sand50: "#fafafa", sand100: "#f2f2f3", sand200: "#e5e5e7", sand300: "#cbcbd0",
-      sand400: "#a6a6ad", clay500: "#7c7c85", clay600: "#5c5c65",
-      bark700: "#3c3c44", bark800: "#26262c", bark900: "#151518",
+      sand50: "#fafafa",
+      sand100: "#f2f2f3",
+      sand200: "#e5e5e7",
+      sand300: "#cbcbd0",
+      sand400: "#a6a6ad",
+      clay500: "#7c7c85",
+      clay600: "#5c5c65",
+      bark700: "#3c3c44",
+      bark800: "#26262c",
+      bark900: "#151518",
     },
   },
 ];
@@ -358,7 +400,13 @@ export default function Design() {
       <Group title="Body text">
         <FontSelect path="theme.bodyFont" />
         <Choice label="Weight" path="theme.type.body.weight" options={WEIGHTS} />
-        <Slider label="Line height" path="theme.type.body.lineHeight" min={1.3} max={2.4} step={0.05} />
+        <Slider
+          label="Line height"
+          path="theme.type.body.lineHeight"
+          min={1.3}
+          max={2.4}
+          step={0.05}
+        />
       </Group>
 
       <Group title="Eyebrow labels">

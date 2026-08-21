@@ -1,9 +1,13 @@
-/* Media helpers for the admin editor. Files live in Lovable Cloud storage. */
+/* Media helpers for the admin editor. Files live in Supabase Storage. */
 
 /** Downscale + recompress an image file so uploads stay light. */
 export function compressImage(file: File, maxSize = 2200, quality = 0.86): Promise<Blob> {
   return new Promise((resolve) => {
-    if (!file.type.startsWith("image/") || file.type === "image/gif" || file.type === "image/svg+xml") {
+    if (
+      !file.type.startsWith("image/") ||
+      file.type === "image/gif" ||
+      file.type === "image/svg+xml"
+    ) {
       resolve(file);
       return;
     }

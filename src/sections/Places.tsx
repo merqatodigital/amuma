@@ -171,11 +171,7 @@ export function SanVicente() {
           </Reveal>
 
           <Reveal delay={160} className="mt-12">
-            <T
-              path="sanVicente.unlockTitle"
-              as="h3"
-              className="font-display text-2xl font-light"
-            />
+            <T path="sanVicente.unlockTitle" as="h3" className="font-display text-2xl font-light" />
             <T
               path="sanVicente.unlockBody"
               as="p"
@@ -271,11 +267,7 @@ export function Roadmap() {
       <div className="relative mt-16 pl-8 sm:pl-0">
         <div className="absolute top-0 bottom-0 left-[3px] w-px bg-sand-100/20 sm:left-[112px]" />
         {c.items.map((_, i) => (
-          <Reveal
-            key={i}
-            delay={i * 60}
-            className="group/item relative flex gap-8 pb-12 sm:gap-12"
-          >
+          <Reveal key={i} delay={i * 60} className="group/item relative flex gap-8 pb-12 sm:gap-12">
             <ItemTools path="roadmap.items" index={i} />
             <T
               path={`roadmap.items.${i}.year`}

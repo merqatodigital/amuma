@@ -71,7 +71,11 @@ export function Portal() {
         {c.columns.map((col, ci) => (
           <Reveal key={ci} delay={ci * 100} className="group/item relative bg-bark-900 p-9">
             <ItemTools path="portal.columns" index={ci} />
-            <T path={`portal.columns.${ci}.title`} as="h3" className="font-display text-2xl font-light" />
+            <T
+              path={`portal.columns.${ci}.title`}
+              as="h3"
+              className="font-display text-2xl font-light"
+            />
             <ul className="mt-6 space-y-4 text-[13.5px] leading-relaxed text-sand-200/80">
               {col.items.map((_, i) => (
                 <li key={i} className="group/item relative flex gap-3">
@@ -165,7 +169,11 @@ export function Join() {
           {sent && !editMode ? (
             <div className="flex h-full min-h-[420px] flex-col items-center justify-center text-center">
               <div className="t-brand font-display text-4xl">{brand}</div>
-              <T path="join.thanksTitle" as="h3" className="mt-10 font-display text-3xl font-light" />
+              <T
+                path="join.thanksTitle"
+                as="h3"
+                className="mt-10 font-display text-3xl font-light"
+              />
               <T
                 path="join.thanksBody"
                 as="p"
@@ -186,34 +194,56 @@ export function Join() {
               }}
               className="space-y-7"
             >
-              <T path="join.formTitle" as="div" className="text-[10px] tracking-luxe text-clay-600 uppercase" />
+              <T
+                path="join.formTitle"
+                as="div"
+                className="text-[10px] tracking-luxe text-clay-600 uppercase"
+              />
               <div className="grid gap-7 sm:grid-cols-2">
                 <div>
-                  <label className={label} htmlFor="fn">First name *</label>
+                  <label className={label} htmlFor="fn">
+                    First name *
+                  </label>
                   <input id="fn" required className={field} placeholder="Juan" />
                 </div>
                 <div>
-                  <label className={label} htmlFor="ln">Last name *</label>
+                  <label className={label} htmlFor="ln">
+                    Last name *
+                  </label>
                   <input id="ln" required className={field} placeholder="Dela Cruz" />
                 </div>
               </div>
               <div className="grid gap-7 sm:grid-cols-2">
                 <div>
-                  <label className={label} htmlFor="em">Email *</label>
-                  <input id="em" type="email" required className={field} placeholder="you@email.com" />
+                  <label className={label} htmlFor="em">
+                    Email *
+                  </label>
+                  <input
+                    id="em"
+                    type="email"
+                    required
+                    className={field}
+                    placeholder="you@email.com"
+                  />
                 </div>
                 <div>
-                  <label className={label} htmlFor="ph">Phone *</label>
+                  <label className={label} htmlFor="ph">
+                    Phone *
+                  </label>
                   <input id="ph" required className={field} placeholder="+63 900 000 0000" />
                 </div>
               </div>
               <div className="grid gap-7 sm:grid-cols-2">
                 <div>
-                  <label className={label} htmlFor="co">Country *</label>
+                  <label className={label} htmlFor="co">
+                    Country *
+                  </label>
                   <input id="co" required className={field} placeholder="Philippines" />
                 </div>
                 <div>
-                  <label className={label} htmlFor="ti">Tier of interest</label>
+                  <label className={label} htmlFor="ti">
+                    Tier of interest
+                  </label>
                   <select id="ti" className={`${field} appearance-none`}>
                     {[...tiers.map((t) => t.name), "Undecided"].map((t, i) => (
                       <option key={i}>{t}</option>
@@ -222,11 +252,15 @@ export function Join() {
                 </div>
               </div>
               <div>
-                <label className={label} htmlFor="hd">How did you hear about us?</label>
+                <label className={label} htmlFor="hd">
+                  How did you hear about us?
+                </label>
                 <input id="hd" className={field} placeholder="A friend, Instagram, an article…" />
               </div>
               <div>
-                <label className={label} htmlFor="ms">Message (optional)</label>
+                <label className={label} htmlFor="ms">
+                  Message (optional)
+                </label>
                 <textarea
                   id="ms"
                   rows={3}
@@ -240,7 +274,11 @@ export function Join() {
               >
                 <T path="join.submitLabel" />
               </button>
-              <T path="join.formNote" as="p" className="text-[11px] leading-relaxed text-bark-700/55" />
+              <T
+                path="join.formNote"
+                as="p"
+                className="text-[11px] leading-relaxed text-bark-700/55"
+              />
             </form>
           )}
         </Reveal>
@@ -267,7 +305,11 @@ export function Faq() {
         </Reveal>
         <div className="md:col-span-8">
           {c.items.map((_, i) => (
-            <Reveal key={i} delay={i * 40} className="group/item relative border-b border-bark-900/12">
+            <Reveal
+              key={i}
+              delay={i * 40}
+              className="group/item relative border-b border-bark-900/12"
+            >
               <ItemTools path="faq.items" index={i} />
               <div className="flex w-full items-center justify-between gap-6 py-6 text-left">
                 <T

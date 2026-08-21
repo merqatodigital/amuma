@@ -17,7 +17,8 @@ function N({
   const { content, update, editMode } = useSite();
   const raw = path.split(".").reduce<unknown>((a, k) => (a == null ? a : (a as never)[k]), content);
   const num = Number(raw ?? 0);
-  if (!editMode) return <span className={className}>{format ? format(num) : num.toLocaleString()}</span>;
+  if (!editMode)
+    return <span className={className}>{format ? format(num) : num.toLocaleString()}</span>;
   return (
     <input
       type="number"
@@ -176,7 +177,11 @@ export function Revenue() {
         <SectionTitle className="mt-7">
           <T path="revenue.title" className="block whitespace-pre-line" />
         </SectionTitle>
-        <T path="revenue.intro" as="p" className="mt-7 text-[15px] leading-[1.9] text-sand-200/80" />
+        <T
+          path="revenue.intro"
+          as="p"
+          className="mt-7 text-[15px] leading-[1.9] text-sand-200/80"
+        />
       </Reveal>
 
       <Reveal delay={80} className="mt-14">
@@ -355,9 +360,7 @@ export function Calculator() {
             </div>
             <div className="flex items-baseline justify-between">
               <span className="text-bark-700/70">Annual Pebbles</span>
-              <span className="font-display text-2xl">
-                {Number(tier.pebbles).toLocaleString()}
-              </span>
+              <span className="font-display text-2xl">{Number(tier.pebbles).toLocaleString()}</span>
             </div>
           </div>
           <p className="mt-7 flex flex-wrap items-baseline gap-x-1 text-[11.5px] leading-relaxed text-bark-700/60">
@@ -405,7 +408,11 @@ export function Calculator() {
       </div>
 
       <Reveal delay={100} className="mt-10 border border-bark-900/12 bg-sand-100 p-9">
-        <T path="calculator.summaryTitle" as="div" className="text-[10px] tracking-luxe text-clay-600 uppercase" />
+        <T
+          path="calculator.summaryTitle"
+          as="div"
+          className="text-[10px] tracking-luxe text-clay-600 uppercase"
+        />
         <div className="mt-7 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ["Investment", peso(tier.investment)],

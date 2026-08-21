@@ -60,10 +60,7 @@ export default function Hero() {
             }}
           />
           <div className="mt-7 h-px w-16 bg-sand-100/40" />
-          <T
-            path="hero.tagline"
-            className="t-eyebrow mt-6 text-center text-sand-100/75"
-          />
+          <T path="hero.tagline" className="t-eyebrow mt-6 text-center text-sand-100/75" />
 
           <T
             path="hero.headline"

@@ -76,13 +76,7 @@ export function Reveal({
 
 /* ---------------------------------------------------------------- Typography */
 
-export function Eyebrow({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div className={`t-eyebrow flex items-center gap-3 ${className}`}>
       <span className="h-px w-8 bg-current opacity-40" />

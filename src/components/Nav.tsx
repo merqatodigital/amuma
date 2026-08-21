@@ -52,9 +52,7 @@ export default function Nav() {
                 </a>
               </span>
             ))}
-            {editMode && (
-              <AddItem path="nav.links" label="link" className="w-auto! px-3 py-1.5" />
-            )}
+            {editMode && <AddItem path="nav.links" label="link" className="w-auto! px-3 py-1.5" />}
             <a
               href={editMode ? undefined : nav.ctaHref}
               className={`t-btn border px-6 py-2.5 transition-colors duration-300 ${

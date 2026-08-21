@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fbf9f5"/>
+  <path d="M200 280c60-100 120-150 180-100s80 120 140 60 60-130 100-80 60 120 100 60 80-120 120-60 60 120 100 60" stroke="#4a4034" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <circle cx="280" cy="170" r="10" fill="#4a4034"/>
+  <circle cx="500" cy="160" r="10" fill="#4a4034"/>
+  <circle cx="720" cy="170" r="10" fill="#4a4034"/>
+  <text x="600" y="370" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="300" letter-spacing="0.16em" fill="#4a4034">AMUMA</text>
+  <text x="600" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="300" letter-spacing="0.32em" fill="#a08863">BAREFOOT BOUTIQUE RESORTS</text>
+</svg>

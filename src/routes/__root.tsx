@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -37,9 +36,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -77,14 +73,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AMUMA · Barefoot Boutique Resorts" },
+      {
+        name: "description",
+        content:
+          "AMUMA is a circle of intimate boutique retreats in the hidden corners of the Philippines and Southeast Asia — created with care, discovered slowly.",
+      },
+      { name: "author", content: "AMUMA Holding" },
+      { property: "og:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      {
+        property: "og:description",
+        content:
+          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia. Join the Founding Circle.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/og-image.svg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      {
+        name: "twitter:description",
+        content:
+          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia.",
+      },
+      { name: "twitter:image", content: "/og-image.svg" },
     ],
     links: [
       {
@@ -97,9 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon", sizes: "any" },
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,

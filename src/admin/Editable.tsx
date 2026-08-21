@@ -93,7 +93,9 @@ export function EImg({
     setBusy(true);
     const out = await compressImage(file);
     const asFile =
-      out instanceof File ? out : new File([out], file.name.replace(/\.\w+$/, ".jpg"), { type: out.type });
+      out instanceof File
+        ? out
+        : new File([out], file.name.replace(/\.\w+$/, ".jpg"), { type: out.type });
     update(path, await addFile(asFile));
     setBusy(false);
   }
@@ -138,7 +140,14 @@ export function EImg({
             over || busy ? "opacity-100" : "opacity-0 group-hover/img:opacity-100"
           }`}
         >
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.3"
+          >
             <path d="M12 16V4M7 9l5-5 5 5" />
             <path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" />
           </svg>
@@ -154,7 +163,14 @@ export function EImg({
           onClick={(e) => e.stopPropagation()}
         >
           <button onClick={() => ref.current?.click()} className={chip}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M12 16V4M7 9l5-5 5 5" />
               <path d="M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" />
             </svg>
@@ -162,11 +178,20 @@ export function EImg({
           </button>
           {url && (
             <button
-              onClick={() => downloadUrl(url, (alt || "amuma-image").replace(/\s+/g, "-").toLowerCase())}
+              onClick={() =>
+                downloadUrl(url, (alt || "amuma-image").replace(/\s+/g, "-").toLowerCase())
+              }
               className={chip}
               title="Download this image to your device"
             >
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M12 4v12M7 11l5 5 5-5" />
                 <path d="M4 18v2a1 1 0 001 1h14a1 1 0 001-1v-2" />
               </svg>
@@ -278,12 +303,18 @@ export function ItemTools({
     <span
       className={`absolute -top-3 right-1 z-30 flex gap-1 opacity-25 transition-opacity group-hover/item:opacity-100 ${className}`}
     >
-      <button title="Move up" className={btn} onClick={() => move(-1)}>↑</button>
-      <button title="Move down" className={btn} onClick={() => move(1)}>↓</button>
+      <button title="Move up" className={btn} onClick={() => move(-1)}>
+        ↑
+      </button>
+      <button title="Move down" className={btn} onClick={() => move(1)}>
+        ↓
+      </button>
       <button
         title="Duplicate"
         className={btn}
-        onClick={() => set([...list.slice(0, index + 1), structuredClone(list[index]), ...list.slice(index + 1)])}
+        onClick={() =>
+          set([...list.slice(0, index + 1), structuredClone(list[index]), ...list.slice(index + 1)])
+        }
       >
         ⧉
       </button>
@@ -334,7 +365,5 @@ export function Item({
   as?: ElementType;
 }) {
   const { editMode } = useSite();
-  return (
-    <Tag className={`${className} ${editMode ? "group/item relative" : ""}`}>{children}</Tag>
-  );
+  return <Tag className={`${className} ${editMode ? "group/item relative" : ""}`}>{children}</Tag>;
 }

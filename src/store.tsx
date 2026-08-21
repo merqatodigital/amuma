@@ -228,22 +228,19 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     else setLibrary([]);
   }, [admin, refreshLibrary]);
 
-  const addFile = useCallback(
-    async (file: File) => {
-      const ext = (file.name.split(".").pop() || "jpg").toLowerCase().slice(0, 5);
-      const path = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error } = await supabase.storage
-        .from(BUCKET)
-        .upload(path, file, { cacheControl: "31536000", contentType: file.type || undefined });
-      if (error) {
-        alert(`Upload failed: ${error.message}`);
-        return "";
-      }
-      setLibrary((l) => [`sb:${path}`, ...l]);
-      return `sb:${path}`;
-    },
-    [],
-  );
+  const addFile = useCallback(async (file: File) => {
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().slice(0, 5);
+    const path = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await supabase.storage
+      .from(BUCKET)
+      .upload(path, file, { cacheControl: "31536000", contentType: file.type || undefined });
+    if (error) {
+      alert(`Upload failed: ${error.message}`);
+      return "";
+    }
+    setLibrary((l) => [`sb:${path}`, ...l]);
+    return `sb:${path}`;
+  }, []);
 
   const removeFile = useCallback(async (ref: string) => {
     const path = ref.startsWith("sb:") ? ref.slice(3) : ref;
@@ -348,8 +345,7 @@ export function Img({
 }) {
   const { mediaUrl } = useSite();
   const url = mediaUrl(src);
-  if (!url)
-    return <div className={`bg-sand-200 ${className}`} style={style} aria-hidden="true" />;
+  if (!url) return <div className={`bg-sand-200 ${className}`} style={style} aria-hidden="true" />;
   return <img src={url} alt={alt} className={className} style={style} loading={loading} />;
 }
 
@@ -387,15 +383,7 @@ export function MediaLayer({
     const url = mediaUrl(block.video);
     if (url)
       return (
-        <video
-          className={className}
-          style={style}
-          src={url}
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        <video className={className} style={style} src={url} autoPlay muted loop playsInline />
       );
   }
 
