@@ -535,7 +535,6 @@ export default function Admin() {
     editMode,
     setEditMode,
     saveState,
-    email,
     signIn,
     signUp,
   } = useSite();
@@ -554,7 +553,8 @@ export default function Admin() {
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === "a" && e.altKey) {
-        admin ? setOpen((v) => !v) : setLogin(true);
+        setAdmin(true);
+        setOpen((v) => !v);
       }
       if (e.key === "Escape") {
         setLogin(false);
@@ -610,7 +610,10 @@ export default function Admin() {
       {/* launcher / toolbar */}
       <div className="fixed bottom-5 left-5 z-[70] flex items-center gap-2">
         <button
-          onClick={() => (admin ? setOpen((v) => !v) : setLogin(true))}
+          onClick={() => {
+            setAdmin(true);
+            setOpen((v) => !v);
+          }}
           title="Admin"
           className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black/60 text-white/70 backdrop-blur-md transition-all hover:scale-105 hover:text-white"
         >
@@ -827,8 +830,8 @@ export default function Admin() {
                 : saveState === "error"
                   ? "Could not save — check your connection."
                   : "Changes save automatically to the cloud for every visitor."}{" "}
-              Signed in as {email ?? "—"} · {Object.keys(defaultContent).length} editable groups ·
-              Alt+Shift+A toggles this panel.
+              {Object.keys(defaultContent).length} editable groups · Alt+Shift+A toggles this
+              panel.
             </p>
 
           </footer>
