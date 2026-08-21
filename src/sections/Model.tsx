@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { peso } from "../content";
 import { useContent, useSite } from "../store";
-import { Eyebrow, Reveal, Section, SectionTitle } from "../components/ui";
+import { Eyebrow, Reveal, Section, SectionTitle } from "../components/site-ui";
 import { AddItem, ItemTools, T } from "../admin/Editable";
 
 /** Number that becomes an input in edit mode. */

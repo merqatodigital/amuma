@@ -1,5 +1,5 @@
 import { useContent, useSite } from "../store";
-import { Eyebrow, Reveal, Section, SectionTitle } from "../components/ui";
+import { Eyebrow, Reveal, Section, SectionTitle } from "../components/site-ui";
 import { AddItem, EImg, ItemTools, T } from "../admin/Editable";
 
 /**
