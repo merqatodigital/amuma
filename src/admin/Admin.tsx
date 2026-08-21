@@ -527,16 +527,31 @@ function MediaLibrary() {
 /* ---------------------------------------------------------------- panel */
 
 export default function Admin() {
-  const { content, admin, setAdmin, replace, reset, editMode, setEditMode } = useSite();
+  const {
+    content,
+    admin,
+    setAdmin,
+    replace,
+    reset,
+    editMode,
+    setEditMode,
+    saveState,
+    email,
+    signIn,
+    signUp,
+  } = useSite();
   const [open, setOpen] = useState(false);
   const [login, setLogin] = useState(false);
-  const [code, setCode] = useState("");
-  const [err, setErr] = useState(false);
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
+  const [mode, setMode] = useState<"in" | "up">("in");
+  const [busyAuth, setBusyAuth] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
   const [tab, setTab] = useState("__sections");
   const [menu, setMenu] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  /* keyboard shortcut: shift + A */
+  /* keyboard shortcut: alt + shift + A */
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === "a" && e.altKey) {
@@ -551,18 +566,21 @@ export default function Admin() {
     return () => window.removeEventListener("keydown", h);
   }, [admin]);
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (code === PASSKEY) {
-      setAdmin(true);
-      setLogin(false);
-      setOpen(true);
-      setCode("");
-      setErr(false);
-    } else {
-      setErr(true);
+    setBusyAuth(true);
+    setErr(null);
+    const message = mode === "in" ? await signIn(mail, pass) : await signUp(mail, pass);
+    setBusyAuth(false);
+    if (message) {
+      setErr(message);
+      return;
     }
+    setLogin(false);
+    setOpen(true);
+    setPass("");
   }
+
 
   function exportJson() {
     const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
