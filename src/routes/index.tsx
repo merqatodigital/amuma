@@ -1,24 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import Site from "@/components/Site";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  ssr: false,
+  head: () => ({
+    meta: [
+      { title: "AMUMA · Barefoot Boutique Resorts" },
+      {
+        name: "description",
+        content:
+          "AMUMA is a circle of intimate boutique retreats in the hidden corners of the Philippines and Southeast Asia — created with care, discovered slowly.",
+      },
+      { property: "og:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      {
+        property: "og:description",
+        content:
+          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia. Join the Founding Circle.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <Site />;
 }
