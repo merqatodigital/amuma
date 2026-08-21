@@ -4,6 +4,7 @@ import Hero from "./Hero";
 import Admin from "../admin/Admin";
 import { ContentProvider, useContent } from "../store";
 import CustomSection from "../sections/Custom";
+import SectionMedia from "./SectionMedia";
 import { Circle, Experience, Meaning, Vision } from "../sections/Story";
 import { Future, Hidden, Palawan, Roadmap, SanVicente } from "../sections/Places";
 import { Calculator, Flywheel, Revenue, Tiers, Usage } from "../sections/Model";
