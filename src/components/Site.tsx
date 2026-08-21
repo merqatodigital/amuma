@@ -38,9 +38,15 @@ function Sections() {
       {sections
         .filter((s) => s.enabled)
         .map((s) => {
-          if (s.type === "custom") return <CustomSection key={s.id} id={s.id} />;
           const C = REGISTRY[s.type];
-          return C ? <C key={s.id} /> : null;
+          const body =
+            s.type === "custom" ? <CustomSection id={s.id} /> : C ? <C /> : null;
+          return (
+            <div key={s.id}>
+              {body}
+              <SectionMedia id={s.id} />
+            </div>
+          );
         })}
     </>
   );
