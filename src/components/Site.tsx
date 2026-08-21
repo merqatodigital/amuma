@@ -60,6 +60,7 @@ export default function Site() {
         <Nav />
         <main>
           <Hero />
+          <SectionMedia id="hero" />
           <Sections />
         </main>
         <Footer />
