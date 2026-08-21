@@ -6,7 +6,6 @@ import { compressImage, downloadUrl } from "../lib/media";
 import Design from "./Design";
 import SectionsManager from "./Sections";
 
-const PASSKEY = "5309";
 
 const TABS: { key: string; label: string }[] = [
   { key: "__sections", label: "★ Sections — add / delete / order" },
@@ -486,7 +485,7 @@ function MediaLibrary() {
       />
 
       <p className="text-[10px] leading-relaxed text-white/35">
-        {library.length} file{library.length === 1 ? "" : "s"} stored on this device. Copy a
+        {library.length} file{library.length === 1 ? "" : "s"} stored in the cloud media library. Copy a
         reference to paste it into any image field.
       </p>
 
