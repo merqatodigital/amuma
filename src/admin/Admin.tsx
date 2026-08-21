@@ -535,7 +535,6 @@ export default function Admin() {
     editMode,
     setEditMode,
     saveState,
-    email,
     signIn,
     signUp,
   } = useSite();
