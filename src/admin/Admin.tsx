@@ -831,8 +831,8 @@ export default function Admin() {
                 : saveState === "error"
                   ? "Could not save — check your connection."
                   : "Changes save automatically to the cloud for every visitor."}{" "}
-              Signed in as {email ?? "—"} · {Object.keys(defaultContent).length} editable groups ·
-              Alt+Shift+A toggles this panel.
+              {Object.keys(defaultContent).length} editable groups · Alt+Shift+A toggles this
+              panel.
             </p>
 
           </footer>
