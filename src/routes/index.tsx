@@ -1,24 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Site from "@/components/Site";
+import PlatformLanding from "@/components/PlatformLanding";
 
 export const Route = createFileRoute("/")({
   ssr: false,
   validateSearch: (search: Record<string, unknown>) => ({
-    site: (search.site as string) || "main",
+    site: (search.site as string) || "",
   }),
   head: () => ({
     meta: [
-      { title: "AMUMA · Barefoot Boutique Resorts" },
+      { title: "Merqato Digital — Build Your Website in Minutes" },
       {
         name: "description",
         content:
-          "AMUMA is a circle of intimate boutique retreats in the hidden corners of the Philippines and Southeast Asia — created with care, discovered slowly.",
+          "Pick a template, add your content, and publish — all in minutes. No coding. No hosting headaches.",
       },
-      { property: "og:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      { property: "og:title", content: "Merqato Digital — Build Your Website in Minutes" },
       {
         property: "og:description",
         content:
-          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia. Join the Founding Circle.",
+          "Pick a template, add your content, and publish — all in minutes. No coding. No hosting headaches.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -29,5 +30,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { site } = Route.useSearch();
+
+  // No ?site param → show the platform landing page
+  if (!site) return <PlatformLanding />;
+
+  // ?site=main or ?site=<id> → show the site builder
   return <Site siteId={site} />;
 }

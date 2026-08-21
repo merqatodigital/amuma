@@ -73,27 +73,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AMUMA · Barefoot Boutique Resorts" },
+      { title: "Merqato Digital — Build Your Website in Minutes" },
       {
         name: "description",
         content:
-          "AMUMA is a circle of intimate boutique retreats in the hidden corners of the Philippines and Southeast Asia — created with care, discovered slowly.",
+          "Pick a template, add your content, and publish — all in minutes. No coding. No hosting headaches.",
       },
-      { name: "author", content: "AMUMA Holding" },
-      { property: "og:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      { name: "author", content: "Merqato Digital" },
+      { property: "og:title", content: "Merqato Digital — Build Your Website in Minutes" },
       {
         property: "og:description",
         content:
-          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia. Join the Founding Circle.",
+          "Pick a template, add your content, and publish — all in minutes. No coding. No hosting headaches.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "/og-image.svg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "AMUMA · Barefoot Boutique Resorts" },
+      { name: "twitter:title", content: "Merqato Digital — Build Your Website in Minutes" },
       {
         name: "twitter:description",
         content:
-          "A circle of intimate retreats in the hidden corners of the Philippines and Southeast Asia.",
+          "Pick a template, add your content, and publish — all in minutes. No coding. No hosting headaches.",
       },
       { name: "twitter:image", content: "/og-image.svg" },
     ],
